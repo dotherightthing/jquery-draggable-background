@@ -8,6 +8,7 @@
  * Licensed under the MIT license:
  *   http://www.opensource.org/licenses/mit-license.php
  */
+/* globals jQuery */
 ;(function($) {
   var $window = $(window);
 
@@ -37,7 +38,7 @@
       if ($el.css('background-size') == "cover") {
         var elementWidth = $el.innerWidth(),
             elementHeight = $el.innerHeight(),
-            elementAspectRatio = elementWidth / elementHeight;
+            elementAspectRatio = elementWidth / elementHeight,
             imageAspectRatio = image.width / image.height,
             scale = 1;
 
@@ -130,7 +131,7 @@
     var $el = $(this.element);
     $el.off('mousedown.dbg touchstart.dbg');
     $window.off('mousemove.dbg touchmove.dbg mouseup.dbg touchend.dbg mouseleave.dbg');
-  }
+  };
 
   $.fn.backgroundDraggable = function(options) {
     var options = options;
@@ -138,13 +139,14 @@
 
     return this.each(function() {
       var $this = $(this);
+      var plugin;
 
       if (typeof options == 'undefined' || typeof options == 'object') {
         options = $.extend({}, $.fn.backgroundDraggable.defaults, options);
-        var plugin = new Plugin(this, options);
+        plugin = new Plugin(this, options);
         $this.data('dbg', plugin);
       } else if (typeof options == 'string' && $this.data('dbg')) {
-        var plugin = $this.data('dbg');
+        plugin = $this.data('dbg');
         Plugin.prototype[options].apply(plugin, args);
       }
     });

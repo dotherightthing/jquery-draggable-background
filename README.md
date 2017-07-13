@@ -33,6 +33,27 @@ your specific needs.
     <td>If specified, restrict dragging along x or y axis.</td>
   </tr>
   <tr>
+    <td>x_percentage</td>
+    <td>Boolean</td>
+    <td>true|false</td>
+    <td>true</td>
+    <td>If specified, treat X position as a percentage rather than a pixel value.</td>
+  </tr>
+  <tr>
+    <td>y_percentage</td>
+    <td>Boolean</td>
+    <td>true|false</td>
+    <td>true</td>
+    <td>If specified, treat Y position as a percentage rather than a pixel value.</td>
+  </tr>
+  <tr>
+    <td>parent_background</td>
+    <td>Boolean</td>
+    <td>true|false</td>
+    <td>true</td>
+    <td>If specified, treat parent element as CSS target (useful if child element steals mouse events).</td>
+  </tr>
+  <tr>
     <td>done</td>
     <td>Function</td>
     <td></td>
@@ -68,6 +89,10 @@ http://kentor.github.com/jquery-draggable-background/
 IE9+. Only `background-size` value of `auto` (default) and `cover` are supported. `background-position` must be absolute pixels. There will be bugs if you use `center` for percentages.
 
 ## Changelog
+
+v1.2.4 [2017-07-13] (fork)
+- Fixed validation errors (a6f84ad).
+- Added new options (x_percentage, y_percentage, parent_background) (99cd430).
 
 v1.2.3 [2014-10-17]
 - Fixed child elements of element with background dragging calling `preventDefault` (7f17318).

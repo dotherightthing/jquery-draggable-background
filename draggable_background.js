@@ -27,15 +27,24 @@
     e.clientY = e.originalEvent.touches[0].clientY;
   };
 
-  var getBackgroundImageDimensions = function($el) {
-    var bgSrc = ($el.css('background-image').match(/^url\(['"]?(.*?)['"]?\)$/i) || [])[1];
+  var getBackgroundImageDimensions = function($el, options) {
+
+    var $css_el = $el;
+
+    if ( options.parent_background ) {
+      $css_el = $el.parent();
+    }
+
+    var bgSrc = ($css_el.css('background-image').match(/^url\(['"]?(.*?)['"]?\)$/i) || [])[1];
+
     if (!bgSrc) return;
 
     var imageDimensions = { width: 0, height: 0 },
         image = new Image();
 
     image.onload = function() {
-      if ($el.css('background-size') == "cover") {
+
+      if ($css_el.css('background-size') == "cover") {
         var elementWidth = $el.innerWidth(),
             elementHeight = $el.innerHeight(),
             elementAspectRatio = elementWidth / elementHeight,
@@ -69,15 +78,21 @@
 
   Plugin.prototype.init = function() {
     var $el = $(this.element),
-        bgSrc = ($el.css('background-image').match(/^url\(['"]?(.*?)['"]?\)$/i) || [])[1],
-        options = this.options;
+        options = this.options,
+        $css_el = $el;
+
+    if ( options.parent_background ) {
+      $css_el = $el.parent();
+    }
+
+    var bgSrc = ($css_el.css('background-image').match(/^url\(['"]?(.*?)['"]?\)$/i) || [])[1];
 
     if (!bgSrc) return;
 
     // Get the image's width and height if bound
     var imageDimensions = { width: 0, height: 0 };
     if (options.bound) {
-      imageDimensions = getBackgroundImageDimensions($el);
+      imageDimensions = getBackgroundImageDimensions($el, options);
     }
 
     $el.on('mousedown.dbg touchstart.dbg', function(e) {
@@ -94,9 +109,17 @@
 
       var x0 = e.clientX,
           y0 = e.clientY,
-          pos = $el.css('background-position').match(/(-?\d+).*?\s(-?\d+)/) || [],
+          pos = $css_el.css('background-position').match(/(-?\d+).*?\s(-?\d+)/) || [],
           xPos = parseInt(pos[1]) || 0,
           yPos = parseInt(pos[2]) || 0;
+
+          if ( options.x_percentage && ( xPos !== 0 ) ) {
+            xPos = xPos * (imageDimensions.width/100);
+          }
+
+          if ( options.y_percentage && ( yPos !== 0 ) ) {
+            yPos = yPos * (imageDimensions.height/100);
+          }
 
       $window.on('mousemove.dbg touchmove.dbg', function(e) {
         e.preventDefault();
@@ -113,7 +136,7 @@
         x0 = x;
         y0 = y;
 
-        $el.css('background-position', xPos + 'px ' + yPos + 'px');
+        $css_el.css('background-position', xPos + 'px ' + yPos + 'px');
       });
 
       $window.on('mouseup.dbg touchend.dbg mouseleave.dbg', function() {
@@ -154,6 +177,9 @@
 
   $.fn.backgroundDraggable.defaults = {
     bound: true,
-    axis: undefined
+    axis: undefined,
+    x_percentage: true,
+    y_percentage: true,
+    parent_background: true
   };
 }(jQuery));

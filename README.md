@@ -90,9 +90,12 @@ IE9+. Only `background-size` value of `auto` (default) and `cover` are supported
 
 ## Changelog
 
-v1.2.4 [2017-07-13] (fork)
+v1.2.5 [2017-07-13] (fork)
 - Fixed validation errors (a6f84ad).
 - Added new options (x_percentage, y_percentage, parent_background) (99cd430).
+
+v1.2.4 [2014-12-18]
+- (87855c1)
 
 v1.2.3 [2014-10-17]
 - Fixed child elements of element with background dragging calling `preventDefault` (7f17318).
